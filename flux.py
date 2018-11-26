@@ -90,7 +90,7 @@ def xgcd(e, phi_n):
 def puissance_mod(a, w, n):
 	if w == 0:
 		return 1
-	r = puissance_mod(a, w/2, n)
+	r = puissance_mod(a, w//2, n)
 	r = (r * r) % n
 
 	if w % 2:
@@ -98,7 +98,25 @@ def puissance_mod(a, w, n):
 	
 	return r
 
-def pollard(n):
+def polynome(x):
+	return x**2 + 1
+	
+def pollard_rho(n):
+	x = 1; y = 1; z = 1; m = 100000
+	while True:
+		x = polynome(x) % n
+		y = polynome(polynome(y) % n) % n
+		z = (z * abs(x - y)) % n
+		m = m - 1
+		
+		if m == 0:
+			p = pgcd(n, z)
+			if p != 1:
+				return p
+			
+			z = 1; m = 100000
+	
+def pollard_pm1(n):
 	m = 2
 	max = 100000
 
@@ -115,8 +133,8 @@ def euclide(e, phi_n):
 
 n = 71632723108922042565754944705405938190163585182073827738737257362015607916694427702407539315166426071602596601779609881448209515844638662529498857637473895727439924386515509746946997356908229763669590304560652312325131017845440601438692992657035378159812499525148161871071841049058092385268270673367938496513
 e = 1009
-p = pollard(n)
-q = n/p
+p = pollard_pm1(n)
+q = n//p
 phi_n = (p - 1) * (q - 1)
 
 d = euclide(e, phi_n)
@@ -130,8 +148,8 @@ q = puissance_mod(qdh_chiffre_avec_RSA, d, n)
 p = puissance_mod(pdh_chiffre_avec_RSA, d, n)
 g = puissance_mod(gdh_chiffre_avec_RSA, d, n)
 
-print p
-print g
+print (p)
+print (g)
 
 # Appel de la methode de chiffrement / dechiffrement de fichiers
 chiffre_flux(g, "salaires.mm","sortie.txt")
@@ -146,8 +164,8 @@ claude = 32785990179062766920584737848735367794508677603
 
 n = 86062381025757488680496918738059554508315544797
 e = 13
-p = pollard(n)
-q = n/p
+p = pollard_rho(n)
+q = n//p
 phi_n = (p - 1) * (q - 1)
 
 d = euclide(e, phi_n)
@@ -158,10 +176,10 @@ fernand_salaire = puissance_mod(fernand, d, n)
 angele_salaire = puissance_mod(angele, d, n)
 bernard_salaire = puissance_mod(bernard, d, n)
 claude_salaire = puissance_mod(claude, d, n)
-print "Salaire Alain: ", alain_salaire
-print "Salaire Michele: ", michele_salaire
-print "Salaire Stephanie: ", stephanie_salaire
-print "Salaire Fernand: ", fernand_salaire
-print "Salaire Angele: ", angele_salaire
-print "Salaire Bernard: ", bernard_salaire
-print "Salaire Claude: ", claude_salaire
+print ("Salaire Alain: ", alain_salaire)
+print ("Salaire Michele: ", michele_salaire)
+print ("Salaire Stephanie: ", stephanie_salaire)
+print ("Salaire Fernand: ", fernand_salaire)
+print ("Salaire Angele: ", angele_salaire)
+print ("Salaire Bernard: ", bernard_salaire)
+print ("Salaire Claude: ", claude_salaire)
